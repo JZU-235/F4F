@@ -29,27 +29,30 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    #header {
-      font-size: 26px;
-      font-weight: bold;
-      text-align: center;
-      color: #333;
-    }
-
     #description {
       text-align: center;
-      font-size: 16px;
+      font-size: 18px;
       color: #555;
       margin-bottom: 20px;
       max-width: 90%;
+      transition: color 0.5s;
+    }
+
+    .dark-mode #description {
+      color: #fff;
     }
 
     model-viewer {
-      width: 90%;
-      max-width: 500px;
-      height: 60vh;
+      width: 100%;
+      max-width: 600px;
+      height: 70vh;
       border-radius: 10px;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      transition: filter 0.5s;
+    }
+
+    .blur-background {
+      filter: blur(5px);
     }
 
     #ar-button {
@@ -83,7 +86,11 @@
       border-radius: 50%;
       cursor: pointer;
       font-size: 20px;
-      transition: background-color 0.5s;
+      transition: background-color 0.5s, transform 0.2s;
+    }
+
+    #dark-mode-toggle:hover {
+      transform: scale(1.1);
     }
 
     #loading-message {
@@ -112,13 +119,6 @@
       100% { transform: rotate(360deg); }
     }
 
-    #license-info {
-      font-size: 12px;
-      color: #777;
-      text-align: center;
-      margin-top: 20px;
-    }
-
     #frame4future {
       font-size: 10px;
       color: #333;
@@ -139,13 +139,10 @@
 </head>
 <body>
 
-<div class="glass" id="header">Interaktivní AR s modelem</div>
-
 <div class="glass" id="description">Prohlédněte si interaktivní model ve vašem prostoru pomocí rozšířené reality (AR).</div>
 
 <div id="dark-mode-toggle" onclick="toggleDarkMode()">🌙</div>
 
-<!-- Zpráva o načítání modelu s animovaným indikátorem -->
 <div id="loading-message">
   <span id="loading-icon"></span>Načítání modelu, prosím čekejte...
 </div>
@@ -169,10 +166,6 @@
 
 <button id="ar-button" style="display: none;">Zobrazit ve vašem prostoru</button>
 
-<div id="license-info">
-  Používá <a href="https://github.com/google/model-viewer" target="_blank">Model Viewer</a> (Apache 2.0) a <a href="https://threejs.org/" target="_blank">three.js</a> (MIT).
-</div>
-
 <div id="frame4future">
   <a href="https://www.frame4future.com" target="_blank">www.frame4future.com</a>
 </div>
@@ -190,6 +183,7 @@
     document.body.style.backgroundColor = isDark ? '#222' : '#f4f4f9';
     document.body.style.color = isDark ? '#f4f4f9' : '#333';
     darkModeToggle.style.backgroundColor = isDark ? '#555' : 'rgba(0, 0, 0, 0.5)';
+    modelViewer.classList.toggle('blur-background', isDark);
   }
 
   modelViewer.addEventListener('ar-status', (event) => {
