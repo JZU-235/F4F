@@ -3,114 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interaktivní AR s modelem by F4F</title>
+  <title>Interaktivní AR s modelem</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer"></script>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom right, #E5E5E5, #B3B3B3);
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      overflow: hidden;
+      background-color: #E5E5E5;
     }
-
-    header {
-      width: 100%;
-      background-color: #007BFF;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      font-size: 24px;
-      font-weight: bold;
-    }
-
     model-viewer {
       width: 100%;
-      height: 70vh;
-      margin: 20px 0;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      border-radius: 8px;
-      overflow: hidden;
+      height: 80vh;
     }
-
     #ar-button {
       position: fixed;
-      bottom: 80px;
+      bottom: 60px;
       left: 50%;
       transform: translateX(-50%);
-      padding: 15px 30px;
+      padding: 10px 20px;
       font-size: 18px;
-      font-weight: bold;
       background: #007BFF;
       color: white;
       border: none;
       outline: none;
-      border-radius: 8px;
+      border-radius: 5px;
       cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s;
+      transition: background-color 0.3s ease;
     }
-
     #ar-button:hover {
       background-color: #0056B3;
-      transform: scale(1.05);
     }
-
     #loading-message {
       text-align: center;
       font-size: 18px;
       padding: 20px;
       color: #555;
     }
-
     #error-message {
       text-align: center;
       font-size: 18px;
       padding: 20px;
       color: red;
     }
-
     #license-info {
       position: fixed;
-      bottom: 10px;
+      bottom: 5px;
       left: 50%;
       transform: translateX(-50%);
       font-size: 12px;
       color: #555;
       text-align: center;
     }
-
-    /* Animace pro načítání */
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    #loading-icon {
-      display: inline-block;
-      width: 24px;
-      height: 24px;
-      border: 4px solid #555;
-      border-radius: 50%;
-      border-top-color: transparent;
-      animation: spin 1s linear infinite;
-      margin-right: 10px;
-    }
-
   </style>
 </head>
 <body>
 
-<header>Interaktivní AR s modelem</header>
+<div id="loading-message">Načítání modelu, prosím čekejte...</div>
 
-<!-- Zpráva o načítání modelu -->
-<div id="loading-message"><span id="loading-icon"></span>Načítání modelu, prosím čekejte...</div>
-
-<!-- Model Viewer with optimized camera controls and AR settings -->
 <model-viewer
   id="model"
   src="./us_prezident_pecet.glb"
@@ -128,13 +76,10 @@
   interaction-prompt-style="wiggle"
   camera-target="auto"></model-viewer>
 
-<!-- Tlačítko pro aktivaci AR -->
 <button id="ar-button" style="display: none;">Zobrazit ve vašem prostoru</button>
 
-<!-- Zpráva o chybě -->
 <div id="error-message" style="display: none;">AR není dostupná na vašem zařízení.</div>
 
-<!-- Informace o licencích -->
 <div id="license-info">
   Používá <a href="https://github.com/google/model-viewer" target="_blank">Model Viewer</a> (Apache 2.0) a <a href="https://threejs.org/" target="_blank">three.js</a> (MIT).
 </div>
@@ -145,7 +90,6 @@
   const loadingMessage = document.querySelector('#loading-message');
   const errorMessage = document.querySelector('#error-message');
 
-  // Zobrazit tlačítko, pokud je AR dostupná
   modelViewer.addEventListener('ar-status', (event) => {
     if (event.detail.status === 'session-started') {
       console.log('AR sezení spuštěno');
@@ -154,11 +98,8 @@
     }
   });
 
-  // Načítání modelu a správa chyb
   modelViewer.addEventListener('load', () => {
-    // Skryje zprávu o načítání, když je model načtený
     loadingMessage.style.display = 'none';
-    // Zobrazí tlačítko pro AR
     if (modelViewer.canActivateAR) {
       arButton.style.display = 'block';
     } else {
@@ -166,13 +107,11 @@
     }
   });
 
-  // Chyba při načítání modelu
   modelViewer.addEventListener('error', (event) => {
     console.error('Chyba při načítání modelu:', event);
     loadingMessage.innerHTML = 'Chyba při načítání modelu. Zkuste to znovu.';
   });
 
-  // Aktivace AR po kliknutí na tlačítko
   arButton.addEventListener('click', () => {
     if (modelViewer.canActivateAR) {
       try {
