@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interaktivní AR s modelem</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer"></script>
+  <style>
+    body {
+      margin: 0;
+      background-color: #E5E5E5;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #007BFF;
+      color: white;
+      padding: 10px 0;
+      width: 100%;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    #description {
+      text-align: center;
+      padding: 10px;
+      color: #333;
+    }
+
+    model-viewer {
+      width: 100%;
+      height: 60vh;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    #ar-button {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      background: #007BFF;
+      color: white;
+      border: none;
+      outline: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s;
+    }
+
+    #ar-button:hover {
+      background-color: #0056B3;
+      transform: scale(1.05);
+    }
+
+    #loading-message {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #555;
+    }
+
+    #loading-icon {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 4px solid #555;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #license-info {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+    }
+
+    #frame4future {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      color: #333;
+    }
+
+    #frame4future a {
+      color: #333;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    #frame4future a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<header>Interaktivní AR s modelem</header>
+
+<div id="description">Prohlédněte si interaktivní model ve vašem prostoru pomocí rozšířené reality (AR).</div>
+
+<!-- Zpráva o načítání modelu s animovaným indikátorem -->
+<div id="loading-message">
+  <span id="loading-icon"></span>Načítání modelu, prosím čekejte...
+</div>
+
+<model-viewer
+  id="model"
+  src="./us_prezident_pecet.glb"
+  ar ar-modes="webxr scene-viewer quick-look"
+  camera-controls
+  environment-image="neutral"
+  auto-rotate
+  scale="9 9 9"
+  xr-environment
+  camera-orbit="45deg 75deg 3m"
+  min-camera-orbit="auto 0deg 2m"
+  max-camera-orbit="auto 180deg 4m"
+  field-of-view="45deg"
+  interaction-prompt="auto"
+  interaction-prompt-style="wiggle"
+  camera-target="auto"></model-viewer>
+
+<!-- Tlačítko pro aktivaci AR -->
+<button id="ar-button" style="display: none;">Zobrazit ve vašem prostoru</button>
+
+<!-- Informace o licencích -->
+<div id="license-info">
+  Používá <a href="https://github.com/google/model-viewer" target="_blank">Model Viewer</a> (Apache 2.0) a <a href="https://threejs.org/" target="_blank">three.js</a> (MIT).
+</div>
+
+<!-- Klikatelný odkaz "frame4future" -->
+<div id="frame4future">
+  <a href="https://www.frame4future.com" target="_blank">www.frame4future.com</a>
+</div>
+
+<script>
+  const modelViewer = document.querySelector('#model');
+  const arButton = document.querySelector('#ar-button');
+  const loadingMessage = document.querySelector('#loading-message');
+
+  modelViewer.addEventListener('ar-status', (event) => {
+    if (event.detail.status === 'session-started') {
+      console.log('AR sezení spuštěno');
+    } else if (event.detail.status === 'session-ended') {
+      console.log('AR sezení ukončeno');
+    }
+  });
+
+  modelViewer.addEventListener('load', () => {
+    loadingMessage.style.display = 'none';
+    if (modelViewer.canActivateAR) {
+      arButton.style.display = 'block';
+    }
+  });
+
+  modelViewer.addEventListener('error', (event) => {
+    console.error('Chyba při načítání modelu:', event);
+    loadingMessage.innerHTML = 'Chyba při načítání modelu. Zkuste to znovu.';
+  });
+
+  arButton.addEventListener('click', () => {
+    if (modelViewer.canActivateAR) {
+      try {
+        modelViewer.activateAR();
+      } catch (error) {
+        console.error('Chyba při spuštění AR:', error);
+        alert('Nepodařilo se spustit AR. Zkuste to znovu.');
+      }
+    } else {
+      alert('AR není dostupná na vašem zařízení nebo prohlížeči.');
+    }
+  });
+</script>
+
+</body>
+</html>
