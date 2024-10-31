@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interaktivní AR s modelem</title>
+  <title>InteraktivnÃ­ AR s modelem</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer"></script>
   <style>
     body {
@@ -57,11 +57,11 @@
 </head>
 <body>
 
-<div id="loading-message">Naèítání modelu, prosím èekejte...</div>
+<div id="loading-message">NaÄÃ­tÃ¡nÃ­ modelu, prosÃ­m Äekejte...</div>
 
 <model-viewer
   id="model"
-  src="https://drive.google.com/uc?export=download&id=1R6nIdWCEKPRXUssBEHJG62sDEvDtsUhC"
+  src="us_prezident_pecet.glb"
   ar ar-modes="webxr scene-viewer quick-look"
   camera-controls
   environment-image="neutral"
@@ -76,12 +76,12 @@
   interaction-prompt-style="wiggle"
   camera-target="auto"></model-viewer>
 
-<button id="ar-button" style="display: none;">Zobrazit ve vašem prostoru</button>
+<button id="ar-button" style="display: none;">Zobrazit ve vaÅ¡em prostoru</button>
 
-<div id="error-message" style="display: none;">AR není dostupná na vašem zaøízení.</div>
+<div id="error-message" style="display: none;">AR nenÃ­ dostupnÃ¡ na vaÅ¡em zaÅ™Ã­zenÃ­.</div>
 
 <div id="license-info">
-  Pouívá <a href="https://github.com/google/model-viewer" target="_blank">Model Viewer</a> (Apache 2.0) a <a href="https://threejs.org/" target="_blank">three.js</a> (MIT).
+  PouÅ¾Ã­vÃ¡ <a href="https://github.com/google/model-viewer" target="_blank">Model Viewer</a> (Apache 2.0) a <a href="https://threejs.org/" target="_blank">three.js</a> (MIT).
 </div>
 
 <script>
@@ -92,39 +92,10 @@
 
   modelViewer.addEventListener('ar-status', (event) => {
     if (event.detail.status === 'session-started') {
-      console.log('AR sezení spuštìno');
+      console.log('AR sezenÃ­ spuÅ¡tÄ›no');
     } else if (event.detail.status === 'session-ended') {
-      console.log('AR sezení ukonèeno');
+      console.log('AR sezenÃ­ ukonÄeno');
     }
   });
 
-  modelViewer.addEventListener('load', () => {
-    loadingMessage.style.display = 'none';
-    if (modelViewer.canActivateAR) {
-      arButton.style.display = 'block';
-    } else {
-      errorMessage.style.display = 'block';
-    }
-  });
-
-  modelViewer.addEventListener('error', (event) => {
-    console.error('Chyba pøi naèítání modelu:', event);
-    loadingMessage.innerHTML = 'Chyba pøi naèítání modelu. Zkuste to znovu.';
-  });
-
-  arButton.addEventListener('click', () => {
-    if (modelViewer.canActivateAR) {
-      try {
-        modelViewer.activateAR();
-      } catch (error) {
-        console.error('Chyba pøi spuštìní AR:', error);
-        alert('Nepodaøilo se spustit AR. Zkuste to znovu.');
-      }
-    } else {
-      alert('AR není dostupná na vašem zaøízení nebo prohlíeèi.');
-    }
-  });
-</script>
-
-</body>
-</html>
+  model
