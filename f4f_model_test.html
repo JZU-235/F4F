@@ -17,6 +17,7 @@
       justify-content: center;
       min-height: 100vh;
       overflow-x: hidden;
+      transition: background-color 0.5s;
     }
 
     #header {
@@ -79,6 +80,17 @@
       }
     }
 
+    #dark-mode-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: #333;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
     #loading-message {
       text-align: center;
       font-size: 18px;
@@ -134,6 +146,9 @@
 
 <div id="description">Prohlédněte si interaktivní model ve vašem prostoru pomocí rozšířené reality (AR).</div>
 
+<!-- Tlačítko pro přepínání světlého/tmavého režimu -->
+<div id="dark-mode-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</div>
+
 <!-- Zpráva o načítání modelu s animovaným indikátorem -->
 <div id="loading-message">
   <span id="loading-icon"></span>Načítání modelu, prosím čekejte...
@@ -173,6 +188,14 @@
   const modelViewer = document.querySelector('#model');
   const arButton = document.querySelector('#ar-button');
   const loadingMessage = document.querySelector('#loading-message');
+
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    document.getElementById('dark-mode-toggle').textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+    document.body.style.backgroundColor = isDark ? '#333' : '#f4f4f9';
+    document.body.style.color = isDark ? '#f4f4f9' : '#333';
+  }
 
   modelViewer.addEventListener('ar-status', (event) => {
     if (event.detail.status === 'session-started') {
