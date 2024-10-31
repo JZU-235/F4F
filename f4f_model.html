@@ -61,7 +61,7 @@
 
 <model-viewer
   id="model"
-  src="us_prezident_pecet.glb"
+  src="./us_prezident_pecet.glb"
   ar ar-modes="webxr scene-viewer quick-look"
   camera-controls
   environment-image="neutral"
@@ -76,26 +76,4 @@
   interaction-prompt-style="wiggle"
   camera-target="auto"></model-viewer>
 
-<button id="ar-button" style="display: none;">Zobrazit ve vašem prostoru</button>
-
-<div id="error-message" style="display: none;">AR není dostupná na vašem zařízení.</div>
-
-<div id="license-info">
-  Používá <a href="https://github.com/google/model-viewer" target="_blank">Model Viewer</a> (Apache 2.0) a <a href="https://threejs.org/" target="_blank">three.js</a> (MIT).
-</div>
-
-<script>
-  const modelViewer = document.querySelector('#model');
-  const arButton = document.querySelector('#ar-button');
-  const loadingMessage = document.querySelector('#loading-message');
-  const errorMessage = document.querySelector('#error-message');
-
-  modelViewer.addEventListener('ar-status', (event) => {
-    if (event.detail.status === 'session-started') {
-      console.log('AR sezení spuštěno');
-    } else if (event.detail.status === 'session-ended') {
-      console.log('AR sezení ukončeno');
-    }
-  });
-
-  model
+<button id="ar-button" style="display: none;">Zobrazit ve vašem p
