@@ -42,27 +42,13 @@
       color: #fff;
     }
 
-    /* Kontejner pro model-viewer s efektem rozmazání pozadí */
-    .model-container {
-      position: relative;
-      width: 100%;
-      max-width: 600px;
-      height: 70vh;
-      overflow: hidden;
-      border-radius: 10px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      transition: filter 0.5s;
-    }
-
-    .dark-mode .model-container {
-      filter: blur(5px);
-    }
-
+    /* Nastavení model-viewer na plnou velikost */
     model-viewer {
-      width: 100%;
-      height: 100%;
-      border-radius: 10px;
-      filter: none; /* Ujistíme se, že model zůstane ostrý */
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      box-shadow: none;
+      margin: 0;
     }
 
     #ar-button {
@@ -157,24 +143,22 @@
   <span id="loading-icon"></span>Načítání modelu, prosím čekejte...
 </div>
 
-<div class="model-container">
-  <model-viewer
-    id="model"
-    src="./us_prezident_pecet.glb"
-    ar ar-modes="webxr scene-viewer quick-look"
-    camera-controls
-    environment-image="neutral"
-    auto-rotate
-    scale="9 9 9"
-    xr-environment
-    camera-orbit="45deg 75deg 3m"
-    min-camera-orbit="auto 0deg 2m"
-    max-camera-orbit="auto 180deg 4m"
-    field-of-view="45deg"
-    interaction-prompt="auto"
-    interaction-prompt-style="wiggle"
-    camera-target="auto"></model-viewer>
-</div>
+<model-viewer
+  id="model"
+  src="./us_prezident_pecet.glb"
+  ar ar-modes="webxr scene-viewer quick-look"
+  camera-controls
+  environment-image="neutral"
+  auto-rotate
+  scale="9 9 9"
+  xr-environment
+  camera-orbit="45deg 75deg 3m"
+  min-camera-orbit="auto 0deg 2m"
+  max-camera-orbit="auto 180deg 4m"
+  field-of-view="45deg"
+  interaction-prompt="auto"
+  interaction-prompt-style="wiggle"
+  camera-target="auto"></model-viewer>
 
 <button id="ar-button" style="display: none;">Zobrazit ve vašem prostoru</button>
 
